@@ -4,15 +4,15 @@ import 'package:pagination/constants/app_constants.dart';
 
 enum Method { POST, GET, PUT, DELETE, PATCH }
 
-const BASE_URL = "";
+const BASE_URL = "https://newsapi.org/v2/";
 
 class HttpClient {
-  late Dio _dio;
+    final Dio _dio = Dio(BaseOptions(baseUrl: BASE_URL, headers: header()));
 
   static header() => {"Content-Type": "application/json"};
 
   Future<HttpClient> init() async {
-    _dio = Dio(BaseOptions(baseUrl: BASE_URL, headers: header()));
+    
     initInterceptors();
     return this;
   }

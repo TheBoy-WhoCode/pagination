@@ -5,7 +5,7 @@ import 'package:pagination/features/home/model/article_model.dart';
 import 'package:dio/dio.dart' as d;
 
 class HomeController extends GetxController with StateMixin, ScrollMixin {
-  final _articles = <Article>[].obs;
+  final articles = <Article>[].obs;
   var page = 1;
   var loadMore = true;
   late final httpClient;
@@ -20,7 +20,7 @@ class HomeController extends GetxController with StateMixin, ScrollMixin {
   loadData() async {
     final map = <String, dynamic>{};
     map['page'] = page;
-    map['pageSize'] = 10;
+    // map['pageSize'] = 20;
     map['apiKey'] = "f8a44a81a0bf4accae1c84801bc178ec";
     map['country'] = "us";
 
@@ -29,11 +29,12 @@ class HomeController extends GetxController with StateMixin, ScrollMixin {
 
       if (result != null) {
         if (result is d.Response) {
-          var data = articleModelFromJson(result.data);
-          logger.d(data);
+          var data = ArticleModel.fromJson(result.data);
+           logger.d(data);
           if (data != null) {
-            _articles.addAll(data.articles ?? []);
+            articles.addAll(data.articles ?? []);
             loadMore = true;
+            change(articles, status: RxStatus.success());
           } else {
             loadMore = false;
           }
